@@ -136,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
     checkoutBtn.addEventListener("click", () => {
       if (confirm("Proceed to checkout? This will clear your shopping cart.")) {
         localStorage.removeItem("shoppingCart");
+        shoppingCart = []; // update the in‑memory cart variable to empty
         alert("Checkout complete!");
         fetchCartProducts();
       }
