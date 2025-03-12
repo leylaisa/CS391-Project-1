@@ -3,10 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const cartTotalElem = document.getElementById("cartTotal");
     const checkoutBtn = document.getElementById("checkoutBtn");
   
-    // Retrieve the shopping cart from localStorage (or an empty array if none exists)
+    // get the cart items from local storage
     let shoppingCart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
   
-    // Fetch product details for each item in the shopping cart
+    // get the item details
     async function fetchCartProducts() {
       if (shoppingCart.length === 0) {
         cartContainer.innerHTML = "<p>Your shopping cart is empty.</p>";
@@ -19,10 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(`https://dummyjson.com/products/${item.productId}`).then(res => res.json())
       );
   
-      // Wait for all product details to be fetched
+      // fetch all 
       const products = await Promise.all(productPromises);
   
-      // Merge each product's details with its cart quantity
       const cartItems = products.map(product => {
         const cartItem = shoppingCart.find(item => item.productId === product.id);
         return { ...product, quantity: cartItem.quantity };
@@ -31,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
       displayCartItems(cartItems);
     }
   
-    // Render the cart items in a table
     function displayCartItems(cartItems) {
       let html = `
         <table class="table align-middle">
@@ -74,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
       cartContainer.innerHTML = html;
   
-      // Set up event listeners for quantity changes and delete actions
+      // qty change and deletion events
       document.querySelectorAll(".quantity-input").forEach(input => {
         input.addEventListener("change", onQuantityChange);
       });
@@ -85,7 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
       updateCartTotal();
     }
   
-    // Handle quantity updates: update localStorage and refresh totals
     function onQuantityChange(event) {
       const input = event.target;
       const newQty = parseInt(input.value, 10);
@@ -96,14 +93,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const row = input.closest("tr");
       const productId = parseInt(row.getAttribute("data-product-id"), 10);
   
-      // Update the corresponding cart item
+      // updates item qty
       const cartItem = shoppingCart.find(item => item.productId === productId);
       if (cartItem) {
         cartItem.quantity = newQty;
       }
       localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
   
-      // Update the row's total price
+      // price for the row
       const priceText = row.children[2].textContent.replace('$', '');
       const price = parseFloat(priceText);
       const itemTotalCell = row.querySelector(".item-total");
@@ -112,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateCartTotal();
     }
   
-    // Handle deletion of an item from the cart
+    // deletes an item from the cart
     function onDeleteItem(event) {
       const row = event.target.closest("tr");
       const productId = parseInt(row.getAttribute("data-product-id"), 10);
@@ -121,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
       fetchCartProducts();
     }
   
-    // Calculate and update the overall cart total
+    // calculates the total price 
     function updateCartTotal() {
       const rows = document.querySelectorAll("tbody tr");
       let total = 0;
@@ -132,16 +129,15 @@ document.addEventListener("DOMContentLoaded", () => {
       cartTotalElem.textContent = total.toFixed(2);
     }
   
-    // Handle checkout: clear the cart after confirmation
+    // clears the cart after checkout 
     checkoutBtn.addEventListener("click", () => {
       if (confirm("Proceed to checkout? This will clear your shopping cart.")) {
         localStorage.removeItem("shoppingCart");
-        shoppingCart = []; // update the in‑memory cart variable to empty
+        shoppingCart = [];
         alert("Checkout complete!");
         fetchCartProducts();
       }
     });
   
-    // Initialize by fetching and displaying cart products
     fetchCartProducts();
   });

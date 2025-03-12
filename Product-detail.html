@@ -9,22 +9,20 @@
 </head>
 <body>
   <div id="productDetailDiv" class="container mt-4">
-    <!-- Total Amount Display (initially $0.00) -->
-    <div id="totalAmount" class="alert alert-info text-center">Total: $0.00</div>
+    <div id="totalAmount" class="alert alert-info text-center">Total: $0.00</div> <!-- it starts from 0 -->
     
-    <!-- Product Detail Card with two-column layout -->
     <div class="card mb-4">
       <div class="row g-0">
-        <!-- Left Column: Image -->
+        <!-- product image on the right -->
         <div class="col-md-4 d-flex align-items-center justify-content-center">
           <img id="productImage" src="" class="img-fluid" alt="Product Image" style="max-width: 100%; max-height: 300px;">
         </div>
-        <!-- Right Column: Product Info -->
+        <!-- product info on the left -->
         <div class="col-md-8">
           <div class="card-body text-center">
             <h5 id="productTitle" class="card-title"></h5>
             <p id="productDescription" class="card-text"></p>
-            <!-- Product Detail Paragraph (approx. 50 chars) -->
+            <!-- lorem text for now -->
             <p id="productDetail" class="card-text">
                 About the product:
                 <ul>
@@ -36,7 +34,6 @@
             <p id="productPrice" class="text-danger fw-bold"></p>
             <div class="mb-3">
               <label for="quantityInput" class="form-label">Quantity:</label>
-              <!-- No default value so total stays $0.00 initially -->
               <input type="number" id="quantityInput" class="form-control" min="1" placeholder="Enter quantity">
             </div>
             <button id="addToCartBtn" class="btn btn-primary">Add to Cart</button>

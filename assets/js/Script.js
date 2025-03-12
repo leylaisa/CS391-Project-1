@@ -7,14 +7,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const seeMoreBtn = document.getElementById("seeMoreBtn");
   
     let products = [];
-    let itemsToShow = 20; // Initial number of items to display
+    let itemsToShow = 20;
   
-    // Fetch products from API
+    // get products from the API
     async function fetchProducts() {
       try {
         const response = await fetch(API_URL);
         const data = await response.json();
-        products = data.products; // Store all products from API
+        products = data.products; 
         applyFilters();
         populateCategories();
       } catch (error) {
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   
-    // Display products in the grid
+    // display products
     function displayProducts(filteredProducts) {
       productList.innerHTML = "";
       filteredProducts.forEach(product => {
@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   
-    // Populate category dropdown
     function populateCategories() {
       const uniqueCategories = [...new Set(products.map(p => p.category))];
       uniqueCategories.forEach(category => {
@@ -56,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   
-    // Apply filters and sorting; limit items shown if no category is selected.
+    // filtering
     function applyFilters() {
       let filtered = products;
       const category = categoryFilter.value;
@@ -75,18 +74,17 @@ document.addEventListener("DOMContentLoaded", () => {
         filtered.sort((a, b) => b.price - a.price);
       }
   
-      // If no category is selected, limit the number of items displayed.
       if (!category) {
         const totalFiltered = filtered.length;
         filtered = filtered.slice(0, itemsToShow);
-        // Show "See More" if there are more items to load.
+        // show the button if there are more items to display
         if (totalFiltered > itemsToShow) {
           seeMoreBtn.style.display = "block";
         } else {
           seeMoreBtn.style.display = "none";
         }
       } else {
-        // Hide the "See More" button when a category is active.
+        // hide the button when there is not much to display 
         seeMoreBtn.style.display = "none";
       }
       displayProducts(filtered);
@@ -94,25 +92,25 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // Event Listeners
   
-    // Category filter resets keyword and sorting.
+    // when a new category is selected, the other filters are reset
     categoryFilter.addEventListener("change", () => {
       searchInput.value = "";
       sortBy.value = "";
-      itemsToShow = 20; // Reset the number of items to show
+      itemsToShow = 20; 
       applyFilters();
     });
   
-    // Search input does not reset other filters.
+    // searching won't reseet the other filters 
     searchInput.addEventListener("input", () => {
       applyFilters();
     });
   
-    // Sorting changes do not reset the keyword.
+    // sorting won't reset the other filters
     sortBy.addEventListener("change", () => {
       applyFilters();
     });
   
-    // "See More" button loads additional items.
+    // button to load more items 
     seeMoreBtn.addEventListener("click", () => {
       itemsToShow += 20;
       applyFilters();
