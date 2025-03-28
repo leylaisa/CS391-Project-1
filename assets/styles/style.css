@@ -5,6 +5,11 @@
 body {
     background-color: #fdf2f8;
     font-family: "Lora", serif;
+
+    #seeMoreBtn {
+        display: block;
+        margin: 0 auto;
+      }
 }
 
 #products-div {
